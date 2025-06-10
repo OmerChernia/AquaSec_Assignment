@@ -12,39 +12,15 @@
     "address": "456 Oak Ave, Jerusalem"
   },
   {
+    "id": "123456789",
+    "name": "Avi Nir",
+    "phone": "0559865895",
+    "address": "Dodeim 1, Haifa"
+  },
+  {
     "id": "000000000",
     "name": "string",
     "phone": "string",
     "address": "string"
-  },
-  {
-    "id": "156489586",
-    "name": "Omer Chernia",
-    "phone": "0524747251",
-    "address": "A B C"
-  },
-  {
-    "id": "888888888",
-    "name": "Omer Chernia",
-    "phone": "052-4747251",
-    "address": "A B C"
-  },
-  {
-    "id": "999999999",
-    "name": "Omer Chernia",
-    "phone": "+972524747251",
-    "address": "A B C"
-  },
-  {
-    "id": "444444444",
-    "name": "Omer Chernia",
-    "phone": "+97252-4747251",
-    "address": "A B C"
-  },
-  {
-    "id": "456235859",
-    "name": "Omer Chernia",
-    "phone": "+97544747251",
-    "address": "A B C"
   }
 ]
