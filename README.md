@@ -24,7 +24,6 @@ The project follows a clean, layered architecture to separate concerns:
 .
 ├── app/                  # Main application package
 │   ├── routers/          # API layer (FastAPI routers)
-│   ├── utils/            # Application settings and configuration
 │   ├── repositories/     # Data access layer (repositories)
 │   ├── models/           # Pydantic data models (schemas)
 │   └── utils/            # Reusable utilities (e.g., validators)
@@ -35,7 +34,6 @@ The project follows a clean, layered architecture to separate concerns:
 
 - **`main.py`**: Initializes the FastAPI app and includes the necessary routers.
 - **`app/routers/`**: Defines the API endpoints and handles HTTP requests/responses.
-- **`app/services/`**: Contains the core business logic.
 - **`app/repositories/`**: Manages data access, abstracting the data source (JSON file).
 - **`app/models/`**: Defines the Pydantic data models.
 - **`app/utils/`**: Contains shared utilities like data validators.
