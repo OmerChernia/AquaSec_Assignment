@@ -14,7 +14,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
-class userManager:
+class UserManager:
     def __init__(self):
         self.users: Dict[str, UserBase] = {}
         self.load_users()
@@ -22,8 +22,12 @@ class userManager:
     def load_users(self):
         try:
             with open("users.json", "r") as file:
-                self.users = json.load(file)
-                
+                users_list = json.load(file)
+                # Convert list of users to dictionary with ID as key
+                for user_data in users_list:
+                    user = UserBase(**user_data)
+                    self.users[user.id] = user
+                    
         except FileNotFoundError:
             print("No users file found")
             
@@ -35,13 +39,24 @@ class userManager:
     
     def get_user_by_id(self, id: str):
         return self.users.get(id)
-            
+    
+# --------- User Manager ---------
 
+user_manager = UserManager()
+            
+# --------- API Endpoints ---------
 
 @app.get("/")
-def read_root():
+def read_root(): 
     return {"message": "Hello, World!"}
 
+@app.get("/users", response_model=List[UserBase])
+def get_all_users():
+    return user_manager.get_all_users()
+
+@app.get("/users/{id}")
+def get_user(id: str):
+    return user_manager.get_user_by_id(id)
 
 if __name__ == "__main__":
     import uvicorn
