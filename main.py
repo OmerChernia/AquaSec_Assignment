@@ -106,13 +106,10 @@ class UserManager:
             print(f"User {user.id} already exists")
             raise HTTPException(status_code=400, detail="User already exists")
         
+        self.validate_id(user.id)
+        self.validate_phone(user.phone)
+        
         # Add user to dictionary
-        if not self.validate_id(user.id):
-            raise HTTPException(status_code=400, detail="Invalid ID")
-        
-        if not self.validate_phone(user.phone):
-            raise HTTPException(status_code=400, detail="Invalid phone number")
-        
         self.users[user.id] = user
         self.save_users()
         print(f"User {user.id} created")
