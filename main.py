@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict
 import json
@@ -10,6 +10,14 @@ class UserBase(BaseModel):
     name: str = Field(..., min_length=2, description="The user's name")
     phone: str = Field(..., description="The user's phone number")
     address: str = Field(..., description="The user's address")
+    
+    def to_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'name': self.name,
+            'phone': self.phone,
+            'address': self.address
+        }
 
 class UserCreate(UserBase):
     pass
@@ -31,8 +39,11 @@ class UserManager:
         except FileNotFoundError:
             print("No users file found")
             
-        except json.JSONDecodeError:
-            print("Error parsing users file")
+        except json.JSONDecodeError as e:
+            print(f"Error parsing users file: {e}")
+            
+        except Exception as e:
+            print(f"Error loading users: {e}")
             
     def get_all_users(self):
         return list(self.users.values())
@@ -43,6 +54,28 @@ class UserManager:
                 return user
         return None
     
+    def get_all_usernames(self):
+        return [user.name for user in self.users.values()]
+    
+    def save_users(self):
+        try:
+            with open("users.json", "w") as file:
+                # Convert Pydantic models to dictionaries
+                users_data = [user.to_dict() for user in self.users.values()]
+                json.dump(users_data, file, indent=2)
+        except Exception as e:
+            print(f"Error saving users: {e}")
+            
+    def create_user(self, user: UserCreate):
+        if user.id in self.users:
+            print(f"User {user.id} already exists")
+            raise HTTPException(status_code=400, detail="User already exists")
+        
+        self.users[user.id] = user
+        self.save_users()
+        print(f"User {user.id} created")
+        return user
+
 # --------- User Manager ---------
 
 user_manager = UserManager()
@@ -53,14 +86,18 @@ user_manager = UserManager()
 def read_root(): 
     return {"message": "Hello, World!"}
 
-@app.get("/users", response_model=List[UserBase])
+@app.get("/users", response_model=List[str])
 def get_all_users():
-    return user_manager.get_all_users()
+    return user_manager.get_all_usernames()
 
 @app.get("/users/{name}")
 def get_user(name: str):
     return user_manager.get_user_by_name(name)
 
+@app.post("/users", response_model=UserBase)
+def create_user(user: UserCreate):
+    return user_manager.create_user(user)
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=5001)
+    uvicorn.run("main:app", host="127.0.0.1", port=5001, reload=True)

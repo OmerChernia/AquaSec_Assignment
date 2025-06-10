@@ -1,14 +1,20 @@
 [
-    {
-      "id": "111111111",
-      "name": "John Doe",
-      "phone": "050-1111111",
-      "address": "123 Main St, Tel Aviv"
-    },
-    {
-      "id": "222222222",
-      "name": "Jane Smith",
-      "phone": "052-1111111",
-      "address": "456 Oak Ave, Jerusalem"
-    }
-  ]
+  {
+    "id": "111111111",
+    "name": "John Doe",
+    "phone": "050-1111111",
+    "address": "123 Main St, Tel Aviv"
+  },
+  {
+    "id": "222222222",
+    "name": "Jane Smith",
+    "phone": "052-1111111",
+    "address": "456 Oak Ave, Jerusalem"
+  },
+  {
+    "id": "000000000",
+    "name": "string",
+    "phone": "string",
+    "address": "string"
+  }
+]
