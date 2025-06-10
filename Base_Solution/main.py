@@ -22,6 +22,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
+# <<<<<<<<<<<<<<<<<<<<<<<<< Models >>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 class UserBase(BaseModel):
     """ Base user model with validation rules. """
     
@@ -59,6 +62,7 @@ class UserCreate(UserBase):
     pass
 
 
+
 class UserManager:
     """ Manages user data with file persistence and validation. """
     
@@ -67,6 +71,9 @@ class UserManager:
         self.users: Dict[str, UserBase] = {}
         self.invalid_users: List[dict] = []  # Store invalid users to preserve them
         self.load_users()
+    
+    
+    # <<<<<<<<<<<<<<<<<<<<<<<<< Repositories >>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     # ========== DATA PERSISTENCE METHODS ==========
     
@@ -131,6 +138,10 @@ class UserManager:
         except Exception as e:
             print(f"Error saving users: {e}")
             raise HTTPException(status_code=500, detail="Failed to save user data")
+        
+        # <<<<<<<<<<<<<<<<<<<<<<<<< End of Repositories >>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    # <<<<<<<<<<<<<<<<<<<<<<<<< Validators >>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     # ========== VALIDATION METHODS ==========
     
@@ -254,6 +265,10 @@ class UserManager:
             status_code=400, 
             detail="Phone must be in format: 05X-XXXXXXX, 05XXXXXXXXX, +9725X-XXXXXXX, or +9725XXXXXXXXX"
         )
+        
+        # <<<<<<<<<<<<<<<<<<<<<<<<< End of Validators >>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    # <<<<<<<<<<<<<<<<<<<<<<<<< Services >>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     # ========== USER RETRIEVAL METHODS ==========
     
@@ -302,6 +317,8 @@ class UserManager:
                 return user
         return None
     
+    # <<<<<<<<<<<<<<<<<<<<<<<<< End of Services >>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
     # ========== USER CREATION METHODS ==========
     
     def create_user(self, user: UserCreate) -> UserBase:
@@ -336,9 +353,13 @@ class UserManager:
         return user
 
 
+
 # ========== GLOBAL INSTANCES ==========
 
 user_manager = UserManager()
+
+
+# <<<<<<<<<<<<<<<<<<<<<<<<< Routers >>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 # ========== API ENDPOINTS ==========
@@ -389,6 +410,8 @@ def create_user(user: UserCreate) -> UserBase:
     """
     return user_manager.create_user(user)
 
+
+# <<<<<<<<<<<<<<<<<<<<<<<<< End of Routers >>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 # ========== APPLICATION ENTRY POINT ==========
 
