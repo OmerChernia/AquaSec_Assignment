@@ -37,8 +37,11 @@ class UserManager:
     def get_all_users(self):
         return list(self.users.values())
     
-    def get_user_by_id(self, id: str):
-        return self.users.get(id)
+    def get_user_by_name(self, name: str):
+        for user in self.users.values():
+            if user.name == name:
+                return user
+        return None
     
 # --------- User Manager ---------
 
@@ -54,9 +57,9 @@ def read_root():
 def get_all_users():
     return user_manager.get_all_users()
 
-@app.get("/users/{id}")
-def get_user(id: str):
-    return user_manager.get_user_by_id(id)
+@app.get("/users/{name}")
+def get_user(name: str):
+    return user_manager.get_user_by_name(name)
 
 if __name__ == "__main__":
     import uvicorn
