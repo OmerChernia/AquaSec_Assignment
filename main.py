@@ -2,6 +2,7 @@ from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict
 import json
+import re
 
 app = FastAPI()
 
@@ -57,7 +58,10 @@ class UserManager:
     def get_all_usernames(self):
         return [user.name for user in self.users.values()]
     
+    # --------- User Creation Methods ---------
+    
     def save_users(self):
+        # Save users to JSON file
         try:
             with open("users.json", "w") as file:
                 # Convert Pydantic models to dictionaries
@@ -65,11 +69,49 @@ class UserManager:
                 json.dump(users_data, file, indent=2)
         except Exception as e:
             print(f"Error saving users: {e}")
+    
+    def validate_id(self, id: str):
+        if len(id) != 9:
+            raise HTTPException(status_code=400, detail="ID must be 9 digits")
+        if not id.isdigit():
+            raise HTTPException(status_code=400, detail="ID must be a number")
+        return id
+    
+    def validate_phone(self, phone: str):
+        # Remove any spaces for validation
+        phone = phone.replace(" ", "")
+        
+        # Define valid Israeli phone patterns
+        patterns = [
+            r'^05[0-9]-[0-9]{7}$',      # 05X-XXXXXXX
+            r'^05[0-9]{8}$',            # 05XXXXXXXXX  
+            r'^\+9725[0-9]-[0-9]{7}$',  # +9725X-XXXXXXX
+            r'^\+9725[0-9]{8}$'         # +9725XXXXXXXXX
+        ]
+        
+        # Check if phone matches any valid pattern
+        for pattern in patterns:
+            if re.match(pattern, phone):
+                return phone
+                
+        # If no pattern matches, raise error
+        raise HTTPException(
+            status_code=400, 
+            detail="Phone must be in format: 05X-XXXXXXX, 05XXXXXXXXX, +9725X-XXXXXXX, or +9725XXXXXXXXX"
+        )
             
     def create_user(self, user: UserCreate):
+        # Check if user already exists
         if user.id in self.users:
             print(f"User {user.id} already exists")
             raise HTTPException(status_code=400, detail="User already exists")
+        
+        # Add user to dictionary
+        if not self.validate_id(user.id):
+            raise HTTPException(status_code=400, detail="Invalid ID")
+        
+        if not self.validate_phone(user.phone):
+            raise HTTPException(status_code=400, detail="Invalid phone number")
         
         self.users[user.id] = user
         self.save_users()
