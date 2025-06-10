@@ -28,17 +28,76 @@ class UserManager:
         self.users: Dict[str, UserBase] = {}
         self.load_users()
         
+    def validate_user_data(self, user_data: dict, index: int = None):
+        """Validate a single user's data"""
+        errors = []
+        
+        # Check required fields exist
+        required_fields = ['id', 'name', 'phone', 'address']
+        for field in required_fields:
+            if field not in user_data or not user_data[field]:
+                errors.append(f"Missing or empty {field}")
+        
+        if errors:
+            user_info = f"User {index + 1}" if index is not None else "User"
+            raise ValueError(f"{user_info}: {', '.join(errors)}")
+        
+        # Validate ID
+        try:
+            self.validate_id(user_data['id'])
+        except HTTPException as e:
+            errors.append(f"Invalid ID: {e.detail}")
+        
+        # Validate phone
+        try:
+            self.validate_phone(user_data['phone'])
+        except HTTPException as e:
+            errors.append(f"Invalid phone: {e.detail}")
+        
+        # Validate name (minimum 2 characters)
+        if len(user_data['name'].strip()) < 2:
+            errors.append("Name must be at least 2 characters")
+        
+        # Validate address (not empty)
+        if len(user_data['address'].strip()) == 0:
+            errors.append("Address cannot be empty")
+        
+        if errors:
+            user_info = f"User {index + 1} ({user_data.get('name', 'Unknown')})" if index is not None else f"User ({user_data.get('name', 'Unknown')})"
+            raise ValueError(f"{user_info}: {', '.join(errors)}")
+        
+        return True
+
     def load_users(self):
         try:
             with open("users.json", "r") as file:
                 users_list = json.load(file)
-                # Convert list of users to dictionary with ID as key
-                for user_data in users_list:
-                    user = UserBase(**user_data)
-                    self.users[user.id] = user
+                
+                print(f"Loading {len(users_list)} users from JSON...")
+                valid_users = 0
+                
+                # Validate and convert each user
+                for index, user_data in enumerate(users_list):
+                    try:
+                        # Validate the user data
+                        self.validate_user_data(user_data, index)
+                        
+                        # Create UserBase object
+                        user = UserBase(**user_data)
+                        self.users[user.id] = user
+                        valid_users += 1
+                        
+                    except ValueError as e:
+                        print(f"Validation error: {e}")
+                        continue
+                    except Exception as e:
+                        print(f"Error processing user {index + 1}: {e}")
+                        continue
+                
+                print(f"Successfully loaded {valid_users}/{len(users_list)} users")
                     
         except FileNotFoundError:
-            print("No users file found")
+            print("No users file found - starting with empty user list")
             
         except json.JSONDecodeError as e:
             print(f"Error parsing users file: {e}")
