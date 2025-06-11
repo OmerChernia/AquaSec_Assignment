@@ -7,17 +7,17 @@ class BaseRepository(ABC):
     
     @abstractmethod
     def get_all(self) -> List[Any]:
-        """Get all entities."""
+        """Returns all items from the repository."""
         pass
     
     @abstractmethod
     def get_by_id(self, entity_id: str) -> Optional[Any]:
-        """Get entity by ID."""
+        """Gets a single item by its ID."""
         pass
     
     @abstractmethod
     def create(self, entity: Any) -> Any:
-        """Create new entity."""
+        """Creates a new item."""
         pass
     
     # Example Future methods:

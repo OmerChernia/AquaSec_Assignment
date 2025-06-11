@@ -5,18 +5,7 @@ from app.config import settings
 
 
 class UserBase(BaseModel):
-    """
-    Base user model with comprehensive validation rules.
-    
-    This model defines the core user data structure and validation rules
-    that apply to all user operations in the system.
-    
-    Attributes:
-        id: 9-digit Israeli ID number (string format)
-        name: User's full name (minimum 2 characters)
-        phone: Israeli mobile phone number (various formats supported)
-        address: User's address
-    """
+    """Base user model with core fields and validation."""
     
     id: str = Field(
         ...,
@@ -44,14 +33,7 @@ class UserBase(BaseModel):
     
     
     def to_dict(self) -> Dict[str, str]:
-        """
-        Convert user model to dictionary format.
-        
-        Useful for JSON serialization and database storage.
-        
-        Returns:
-            Dict[str, str]: User data as dictionary
-        """
+        """Converts the user object to a dictionary."""
         return {
             'id': self.id,
             'name': self.name,
@@ -60,11 +42,5 @@ class UserBase(BaseModel):
         }
         
 class UserCreate(UserBase):
-    """
-    Model for creating new users.
-    
-    Inherits all validation rules from UserBase
-    This separate model allows for future extensibility where creation
-    might have different validation rules or additional fields (like password for example).
-    """
+    """Model for creating a new user. Inherits from UserBase."""
     pass

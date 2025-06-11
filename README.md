@@ -27,6 +27,9 @@ The project follows a clean, layered architecture to separate concerns:
 │   ├── repositories/     # Data access layer (repositories)
 │   ├── models/           # Pydantic data models (data shape)
 │   └── utils/            # Reusable utilities (e.g., specific format validators)
+├── tests/                # Test suite
+│   ├── test_api.py       # API endpoint tests
+│   └── test_users.json   # Data used exclusively for testing
 ├── main.py               # Application entry point
 ├── requirements.txt      # Project dependencies
 └── users.json            # Data storage file
@@ -107,3 +110,22 @@ FastAPI automatically generates interactive API documentation. Once the server i
 - **Swagger UI**: `http://127.0.0.1:5001/docs`
 
 This interface allows you to explore and test all the API endpoints directly from your browser.
+
+## Testing
+
+This project uses `pytest` for testing. The tests are located in the `tests/` directory and are configured to run in an isolated environment using the `tests/test_users.json` data file, so they won't affect your primary `users.json`.
+
+To run the tests, first ensure you have installed the project dependencies:
+
+```bash
+# Make sure your virtual environment is activated
+pip install -r requirements.txt
+```
+
+Then, run `pytest` from the root of the project directory:
+
+```bash
+pytest -v
+```
+
+The `-v` flag enables verbose output, showing which tests passed or failed.

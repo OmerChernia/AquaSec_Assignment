@@ -1,14 +1,13 @@
 class Settings:
-    """Application settings and constants."""
     
-    # File settings
+    # File to store user data
     USERS_FILE: str = "users.json"
     
-    # Validation constants
+    # Validation rules
     ID_LENGTH: int = 9
     MIN_NAME_LENGTH: int = 2
     
-    # API settings
+    # API documentation details
     API_TITLE: str = "User Management API"
     API_DESCRIPTION: str = "A REST API for managing users with Israeli phone number and ID validation"
     API_VERSION: str = "1.0.0"
