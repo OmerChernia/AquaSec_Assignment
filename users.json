@@ -1,0 +1,44 @@
+[
+  {
+    "id": "111111111",
+    "name": "John Doe",
+    "phone": "050-1111111",
+    "address": "123 Main St, Tel Aviv"
+  },
+  {
+    "id": "222222222",
+    "name": "Jane Smith",
+    "phone": "052-1111111",
+    "address": "456 Oak Ave, Jerusalem"
+  },
+  {
+    "id": "123456789",
+    "name": "Avi Nir",
+    "phone": "0559865895",
+    "address": "Dodeim 1, Haifa"
+  },
+  {
+    "id": "156489858",
+    "name": "Dor Cohen",
+    "phone": "052-9658954",
+    "address": "Dekel 5, Haifa"
+  },
+  {
+    "id": "156489654",
+    "name": "Ron Raz",
+    "phone": "056-8594587",
+    "address": "Aviv3, Tel Aviv"
+  },
+  {
+    "id": "156848956",
+    "name": "Oren Dor",
+    "phone": "052 4859658",
+    "address": "Zahal4, Haifa"
+  },
+  {
+    "id": "000000000",
+    "name": "string",
+    "phone": "string",
+    "address": "string"
+  }
+]
