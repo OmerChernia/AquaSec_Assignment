@@ -37,33 +37,11 @@ def get_all_users(user_repository: UserRepository = Depends(get_user_repository)
 
 @router.get("/{name}", response_model=UserBase, summary="Get user by name", description="Retrieve a specific user's information by their name")
 def get_user(name: str, user_repository: UserRepository = Depends(get_user_repository)) -> UserBase:
-    """
-    Get user by name.
-    
-    Args:
-        name: The user's name to search for
-        
-    Returns:
-        User information
-        
-    Raises:
-        HTTPException: If user not found
-    """
+    """Gets a single user by their name."""
     return user_repository.get_by_name(name)
 
 
 @router.post("/", response_model=UserBase, status_code=201, summary="Create new user", description="Create a new user with validation for ID and phone number formats")
 def create_user(user: UserCreate, user_repository: UserRepository = Depends(get_user_repository)) -> UserBase:
-    """
-    Create a new user.
-    
-    Args:
-        user: User data to create
-        
-    Returns:
-        The created user information
-        
-    Raises:
-        HTTPException: If user already exists or validation fails
-    """
+    """Creates a new user."""
     return user_repository.create(user)

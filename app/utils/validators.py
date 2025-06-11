@@ -1,30 +1,19 @@
 import re
-from typing import Dict, List
+from typing import Dict
 from fastapi import HTTPException
 
 from app.config import settings
 
 
 class UserValidator:
-    """Handles all user data validation logic."""
+    """A collection of static methods for validating user data."""
     
     @staticmethod
     def validate_user_data(user_data: Dict) -> bool:
-        """
-        Validate a single user's data from JSON.
-        
-        Args:
-            user_data: Dictionary containing user information
-            
-        Returns:
-            True if validation passes
-            
-        Raises:
-            ValueError: If validation fails with detailed error message
-        """
+        """Checks if a user data dictionary is valid."""
         errors = []
         
-        # Check required fields exist and are not empty
+        # Check that required fields exist and are not empty
         required_fields = ['id', 'name', 'phone', 'address']
         for field in required_fields:
             if field not in user_data or not str(user_data[field]).strip():
@@ -62,18 +51,7 @@ class UserValidator:
     
     @staticmethod
     def validate_id(user_id: str) -> str:
-        """
-        Validate Israeli ID number format.
-        
-        Args:
-            user_id: ID string to validate
-            
-        Returns:
-            The validated ID string
-            
-        Raises:
-            HTTPException: If ID format is invalid
-        """
+        """Validates the format of an Israeli ID number."""
         user_id = user_id.strip()
         
         if len(user_id) != settings.ID_LENGTH:
@@ -95,25 +73,14 @@ class UserValidator:
         """
         Validate Israeli mobile phone number format.
         
-        Supports formats:
-        - 05X-XXXXXXX (with dash)
-        - 05XXXXXXXXX (without dash)  
-        - +9725X-XXXXXXX (international with dash)
-        - +9725XXXXXXXXX (international without dash)
-        
-        Args:
-            phone: Phone number string to validate
-            
-        Returns:
-            The validated phone string
-            
-        Raises:
-            HTTPException: If phone format is invalid
+        Supports:
+        - 05X-XXXXXXX
+        - 05XXXXXXXXX
+        - +9725X-XXXXXXX
+        - +9725XXXXXXXXX
         """
-        # Remove spaces for validation
         phone = phone.replace(" ", "").strip()
         
-        # Define valid Israeli mobile phone patterns
         patterns = [
             r'^05[0-9]-[0-9]{7}$',      # 05X-XXXXXXX
             r'^05[0-9]{8}$',            # 05XXXXXXXXX  
