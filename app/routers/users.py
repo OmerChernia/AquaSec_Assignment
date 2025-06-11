@@ -1,13 +1,11 @@
-"""
-User API routes.
-"""
-
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from app.models.user import UserBase, UserCreate
 from app.repositories.user_repository import UserRepository
 
+
+# ---------- Global repository instance ----------
 
 # Global repository instance (initialized at startup)
 _user_repository = None
@@ -23,6 +21,8 @@ def set_user_repository(repository: UserRepository) -> None:
 def get_user_repository() -> UserRepository:
     """Get user repository instance."""
     return _user_repository
+
+# -------------------------------------------------
 
 
 # Router
@@ -49,10 +49,7 @@ def get_user(name: str, user_repository: UserRepository = Depends(get_user_repos
     Raises:
         HTTPException: If user not found
     """
-    user = user_repository.get_by_name(name)
-    if not user:
-        raise HTTPException(status_code=404, detail=f"User '{name}' not found")
-    return user
+    return user_repository.get_by_name(name)
 
 
 @router.post("/", response_model=UserBase, status_code=201, summary="Create new user", description="Create a new user with validation for ID and phone number formats")

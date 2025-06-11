@@ -1,7 +1,3 @@
-"""
-Abstract base repository for data access patterns.
-"""
-
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Any
 
@@ -23,4 +19,16 @@ class BaseRepository(ABC):
     def create(self, entity: Any) -> Any:
         """Create new entity."""
         pass
+    
+    # Example Future methods:
+    # @abstractmethod
+    # def update(self, entity: Any) -> Any:
+    #     """Update existing entity."""
+    #     pass
+    
+    # @abstractmethod
+    # def delete(self, entity_id: str) -> None:
+    #     """Delete entity by ID."""
+    #     pass
+    
     

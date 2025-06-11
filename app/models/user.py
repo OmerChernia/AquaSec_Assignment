@@ -1,14 +1,6 @@
-"""
-User Domain Models
-
-Pydantic models for user data validation, serialization, and API documentation.
-These models define the structure and validation rules for user data throughout the application.
-"""
-
-from pydantic import BaseModel, Field, validator
-from typing import Dict, Optional
+from pydantic import BaseModel, Field
+from typing import Dict
 from app.config import settings
-import re
 
 
 
@@ -71,16 +63,8 @@ class UserCreate(UserBase):
     """
     Model for creating new users.
     
-    Inherits all validation rules from UserBase.
+    Inherits all validation rules from UserBase
     This separate model allows for future extensibility where creation
-    might have different validation rules or additional fields.
-    
-    Example usage:
-        user_data = UserCreate(
-            id="123456789",
-            name="John Doe", 
-            phone="050-1234567",
-            address="123 Main St, Tel Aviv"
-        )
+    might have different validation rules or additional fields (like password for example).
     """
     pass

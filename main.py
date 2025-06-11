@@ -11,7 +11,7 @@ from app.routers.users import set_user_repository
 app = FastAPI(title=settings.API_TITLE, description=settings.API_DESCRIPTION, version=settings.API_VERSION)
 
 # Initialize repository at startup
-user_repository = UserRepository(load_on_init=True)
+user_repository = UserRepository()
 set_user_repository(user_repository)
 
 # Include routers

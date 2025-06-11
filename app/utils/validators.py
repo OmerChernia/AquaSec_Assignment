@@ -1,7 +1,3 @@
-"""
-Validation utilities for user data.
-"""
-
 import re
 from typing import Dict, List
 from fastapi import HTTPException

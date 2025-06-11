@@ -10,13 +10,13 @@ class Settings:
     
     # API settings
     API_TITLE: str = "User Management API"
-    API_DESCRIPTION: str = "A REST API for managing users with Israeli phone number validation"
+    API_DESCRIPTION: str = "A REST API for managing users with Israeli phone number and ID validation"
     API_VERSION: str = "1.0.0"
     
     # Server settings
     HOST: str = "127.0.0.1"
     PORT: int = 5001
-    LOG_LEVEL: str = "info"
+    LOG_LEVEL: str = "info" # tells uvicorn what level of logs to show, can be "debug", "info", "warning", "error", "critical"
 
 
 settings = Settings()

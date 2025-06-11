@@ -1,7 +1,3 @@
-"""
-User repository for data persistence operations.
-"""
-
 import json
 from typing import List, Optional, Dict
 from fastapi import HTTPException
@@ -15,12 +11,11 @@ from app.utils.validators import UserValidator
 class UserRepository(BaseRepository):
     """Handles user data persistence with file storage."""
     
-    def __init__(self, load_on_init: bool = False):
-        """Initialize repository and optionally load existing users."""
-        self.users: Dict[str, UserBase] = {}
-        self.invalid_users: List[dict] = []  # Store invalid users to preserve them
-        if load_on_init:
-            self.load_users()
+    def __init__(self):
+        """Initialize repository and load existing users."""
+        self.users: Dict[str, UserBase] = {} # Store valid users in a dictionary, keyed by ID, value is the UserBase object
+        self.invalid_users: List[dict] = []  # Store invalid users to preserve them in case of validation errors
+        self.load_users()
     
     def load_users(self) -> None:
         """
@@ -48,6 +43,7 @@ class UserRepository(BaseRepository):
                         # Store invalid user to preserve in JSON
                         self.invalid_users.append(user_data)
                         continue
+                    
                     except Exception as e:
                         print(f"Error processing user {index + 1}: {e}")
                         # Store invalid user to preserve in JSON
@@ -84,6 +80,8 @@ class UserRepository(BaseRepository):
             print(f"Error saving users: {e}")
             raise HTTPException(status_code=500, detail="Failed to save user data")
     
+    # ----------- Abstract methods from BaseRepository -----------
+    
     def get_all(self) -> List[UserBase]:
         """Get all users as a list."""
         return list(self.users.values())
@@ -91,17 +89,6 @@ class UserRepository(BaseRepository):
     def get_by_id(self, user_id: str) -> Optional[UserBase]:
         """Get user by ID."""
         return self.users.get(user_id)
-    
-    def get_by_name(self, name: str) -> Optional[UserBase]:
-        """Get user by name."""
-        for user in self.users.values():
-            if user.name == name:
-                return user
-        return None
-    
-    def get_all_names(self) -> List[str]:
-        """Get all usernames as a list."""
-        return [user.name for user in self.users.values()]
     
     def create(self, user: UserCreate) -> UserBase:
         """
@@ -133,4 +120,19 @@ class UserRepository(BaseRepository):
         
         print(f"User {user.id} ({user.name}) created successfully")
         return user
+    
+    # ----------- Other methods -----------
+    
+    def get_by_name(self, name: str) -> Optional[UserBase]:
+        """Get user by name."""
+        for user in self.users.values():
+            if user.name == name:
+                return user
+        return None
+    
+    def get_all_names(self) -> List[str]:
+        """Get all usernames as a list."""
+        return [user.name for user in self.users.values()]
+    
+    
     
